@@ -5,7 +5,7 @@ export const likePost = createAsyncThunk("posts/likePost", async (postData) => {
   try {
     //Pass along the URL the postId
     const response = await axios.put(
-      `http://localhost:3001/likePost/${postData.postId}`,
+      `${process.env.REACT_APP_API_URL}/likePost/${postData.postId}`,
       {
         userId: postData.userId,
       }
@@ -19,10 +19,13 @@ export const likePost = createAsyncThunk("posts/likePost", async (postData) => {
 
 export const savePost = createAsyncThunk("posts/savePost", async (postData) => {
   try {
-    const response = await axios.post("http://localhost:3001/savePost", {
-      postMsg: postData.postMsg,
-      email: postData.email,
-    });
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/savePost`,
+      {
+        postMsg: postData.postMsg,
+        email: postData.email,
+      }
+    );
     const post = response.data.post;
     return post; //Return the new post to Redux
   } catch (error) {
@@ -31,7 +34,7 @@ export const savePost = createAsyncThunk("posts/savePost", async (postData) => {
 });
 export const getPosts = createAsyncThunk("post/getPosts", async () => {
   try {
-    const response = await axios.get("http://localhost:3001/getPosts");
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/getPosts`);
     return response.data.posts;
   } catch (error) {
     console.log(error);
