@@ -1,20 +1,30 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { getPosts } from "../Features/PostSlice";
 import { Table } from "reactstrap";
 import moment from "moment";
+import { FaThumbsUp } from "react-icons/fa6";
+import { likePost } from "../Features/PostSlice";
 
 const Posts = () => {
   const posts = useSelector((state) => state.posts.posts);
   const user = useSelector((state) => state.users.user);
   //const userId = useSelector((state) => state.users.user._id);
+  const handleLikePost = (postId) => {
+    const postData = {
+      postId: postId,
+      userId: user._id,
+    };
+    dispatch(likePost(postData));
+    navigate("/home");
+  };
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
- useEffect(() => {
-   dispatch(getPosts());
- }, []);
+  useEffect(() => {
+    dispatch(getPosts());
+  }, []);
 
   return (
     <div className="postsContainer">
@@ -28,6 +38,12 @@ const Posts = () => {
               <td>
                 <p>{moment(post.createdAt).fromNow()}</p>
                 {post.postMsg}
+                <p className="likes">
+                  <Link onClick={() => handleLikePost(post._id)}>
+                    <FaThumbsUp />
+                  </Link>
+                  ({post.likes.count})
+                </p>
               </td>
             </tr>
           ))}
