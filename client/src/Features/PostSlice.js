@@ -10,7 +10,7 @@ export const likePost = createAsyncThunk("posts/likePost",async(postData)=>{
      })
      const post = response.data.post
      const msg = response.data.msg
-     return({post,msg})
+     return post
    }
    catch(error){
       console.log(error)
